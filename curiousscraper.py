@@ -30,22 +30,27 @@ except TimeoutException:
     exit()
 time.sleep(2.22)
 html = driver.find_element(By.TAG_NAME, "body")
+# driver.find_element(By.CLASS_NAME, 'css-175oi2r').click()
 
 
 # Scroll down to load more content if necessary (add a scroll loop if needed)
-SCROLL_PAUSE_TIME = 5
+SCROLL_PAUSE_TIME = 0.1
 COUNTER = 0
+all_divs = []
 
-while COUNTER < 3:
+while COUNTER < 500:
     COUNTER += 1
     print(f'Scolling ({COUNTER})')
-    print(len(html.text))
+    soup = BeautifulSoup(driver.page_source, "html.parser")
+    divs = soup.find_all("div", class_="css-175oi2r")
+    all_divs.extend(divs)
+    # print(len(html.text))
     # Scroll down to the bottom
-    # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     html.click()
-    time.sleep(1.11)
-    html.send_keys(Keys.END)
+    # time.sleep(1.111)
+    html.send_keys(Keys.DOWN)
     # action.send_keys_to_element(html, "END").perform()
+    # driver.execute_script("window.scrollTo(0, window.scrollY+500);")
 
     # Wait for new content to load
     time.sleep(SCROLL_PAUSE_TIME)
@@ -56,32 +61,32 @@ while COUNTER < 3:
 
 
 # Get the page source and parse it using BeautifulSoup
-soup = BeautifulSoup(driver.page_source, "html.parser")
+# soup = BeautifulSoup(driver.page_source, "html.parser")
 
 
 # Find all the main divs with class "css-175oi2r"
-devs = soup.find_all("div", class_="css-175oi2r")
+# divs = soup.find_all("div", class_="css-175oi2r")
 
 # List to hold the dictionaries
 data_list = []
 
 # Iterate through each main div to extract sub divs
-for dev in devs:
+for div in all_divs:
     try:
         # Extract the question
-        question_div = dev.find("div", class_="css-1rynq56 r-1wns2tv r-ubezar r-fdjqy7 r-9cokr0 r-1xnzce8 r-35wr9i r-13uqrnb r-1it3c9n")
+        question_div = div.find("div", class_="css-1rynq56 r-1wns2tv r-ubezar r-fdjqy7 r-9cokr0 r-1xnzce8 r-35wr9i r-13uqrnb r-1it3c9n")
         question = question_div.get_text(strip=True) if question_div else "N/A"
 
         # Extract the asker
-        asker_div = dev.find("div", class_="css-1rynq56 r-fdjqy7 r-9cokr0 r-1xnzce8 r-9krj61 r-1b43r93 r-5x3879 r-13uqrnb r-1it3c9n")
+        asker_div = div.find("div", class_="css-1rynq56 r-fdjqy7 r-9cokr0 r-1xnzce8 r-9krj61 r-1b43r93 r-5x3879 r-13uqrnb r-1it3c9n")
         asker = asker_div.get_text(strip=True) if asker_div else "N/A"
 
         # Extract the date
-        date_div = dev.find("div", class_="css-1rynq56 r-fdjqy7 r-9cokr0 r-1xnzce8 r-1put3z6 r-1b43r93 r-1bymd8e r-5x3879 r-13uqrnb r-1it3c9n")
+        date_div = div.find("div", class_="css-1rynq56 r-fdjqy7 r-9cokr0 r-1xnzce8 r-1put3z6 r-1b43r93 r-1bymd8e r-5x3879 r-13uqrnb r-1it3c9n")
         date = date_div.get_text(strip=True) if date_div else "N/A"
 
         # Extract the answer
-        answer_div = dev.find("div", class_="css-1rynq56 r-1wns2tv r-ubezar r-fdjqy7 r-9cokr0 r-1xnzce8 r-5x3879 r-13uqrnb r-1it3c9n")
+        answer_div = div.find("div", class_="css-1rynq56 r-1wns2tv r-ubezar r-fdjqy7 r-9cokr0 r-1xnzce8 r-5x3879 r-13uqrnb r-1it3c9n")
         answer = answer_div.get_text(strip=True) if answer_div else "N/A"
 
         # Create a dictionary for this entry
