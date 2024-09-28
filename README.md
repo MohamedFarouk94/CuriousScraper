@@ -84,7 +84,7 @@ profile.to_csv('file_name.csv')   # Exports data to CSV file
 profile.to_json('file_name.json')  # Exports data to JSON file
 ```
 
-### 5. Customization 🛠️
+### 6. Customization 🛠️
 
 You can modify the **waiting_time**, **scroll_pause_time**, and **n_scrolls** arguments to suit your needs. If you don’t provide any, the defaults will be:
 
