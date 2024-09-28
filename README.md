@@ -11,7 +11,7 @@ I've created a quick-and-not-so-dirty Python script that scrapes and saves your 
     2. I don't scrape images. Too much effort and they're not that common anyway.\
     3. The scraping is not headless. So you will monitor the browser while doing it.
 
-## Installation Guide 🚀
+## User Guide 🚀
 
 Let’s get you up and running. Here's how to use this Python-based scraper:
 
@@ -22,17 +22,23 @@ You’ll need **Python 3** installed. If you don’t already have it:
 - **Windows**: [Download it here](https://www.python.org/downloads/).
 - **Mac/Linux**: It’s probably already installed! Run `python3 --version` to check.
 
-### 2. Set Up a Virtual Environment 🌐
+### 2. Download Repository ⬇️
 
-1. Open your terminal/command prompt.
-2. Navigate to the project directory.
-3. Create a virtual environment:
+From the green button `code` in the top of this page, choose the tab `local` and then `Download ZIP`.
+
+Extract the file in a directory on your system. This will be the project directory.
+
+### 3. Set Up a Virtual Environment 🌐
+
+- Open your terminal/command prompt.
+- Navigate to the project directory.
+- Create a virtual environment:
 
    ```bash
    python3 -m venv venv
    ```
 
-4. Activate the virtual environment:
+- Activate the virtual environment:
    - **Windows**:
      ```bash
      venv\Scripts\activate
@@ -42,7 +48,7 @@ You’ll need **Python 3** installed. If you don’t already have it:
      source venv/bin/activate
      ```
 
-### 3. Install the Requirements 📦
+### 4. Install the Requirements 📦
 
 Run the following to install the necessary packages:
 
@@ -50,7 +56,7 @@ Run the following to install the necessary packages:
 pip install -r requirements.txt
 ```
 
-### 4. Run the Scraper 🏃‍♂️
+### 5. Run the Scraper 🏃‍♂️
 
 Open a Python shell:
 
@@ -73,9 +79,9 @@ profile = get_profile(
 )
 
 # Save your data!
-profile.to_html()  # Exports data to HTML file
-profile.to_csv()   # Exports data to CSV file
-profile.to_json()  # Exports data to JSON file
+profile.to_html('file_name.html')  # Exports data to HTML file
+profile.to_csv('file_name.csv')   # Exports data to CSV file
+profile.to_json('file_name.json')  # Exports data to JSON file
 ```
 
 ### 5. Customization 🛠️
@@ -87,6 +93,12 @@ You can modify the **waiting_time**, **scroll_pause_time**, and **n_scrolls** ar
 - **n_scrolls** = 25 scrolls
 
 These values help control how long the script waits before starting to scrape, how long it pauses between scrolls (to load more content), and how many times it simulates pressing the "END" key to scroll down.
+
+Keep in mind that 25 scrolls will scrape ~750 CuriousCat questions approximately, so this might help you decide **n_scrolls**.
+
+Also if you decreased **scroll_pause_time**, the script might skip some questions for it won't wait a proper time for them to load. So adjust at your own responsibility. It's not guaranteed that no questions will be skipped anyway, but the odds are in your favor!
+
+Also, if you don't determine the file name in the functions `to_html`, `to_csv` and `to_json`, the file will be named `cat<SEQUENCE_OF_NUMBERS>.<THE_RIGHT_EXTENSION>`.
 
 ## Enjoy Your Data Backup! 🧳
 

@@ -24,6 +24,7 @@ def start_driver(url, waiting_time=2.22):
     chrome_options.add_experimental_option('useAutomationExtension', False)
     chrome_options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
     # chrome_options.add_argument('--headless')
+    # chromedriver_autoinstaller.install()
     driver = webdriver.Chrome(chrome_options)
     driver.get(url)
 
