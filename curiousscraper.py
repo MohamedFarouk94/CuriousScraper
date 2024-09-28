@@ -7,8 +7,8 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import time
 from selenium.common.exceptions import TimeoutException
-import pandas as pd
 from tqdm import tqdm
+from profile import Profile
 
 
 MAIN_CLASS_NAME = 'css-175oi2r'
@@ -16,12 +16,9 @@ QUESTION_CLASS_NAME = 'css-1rynq56 r-1wns2tv r-ubezar r-fdjqy7 r-9cokr0 r-1xnzce
 ASKER_CLASS_NAME = 'css-1rynq56 r-fdjqy7 r-9cokr0 r-1xnzce8 r-9krj61 r-1b43r93 r-5x3879 r-13uqrnb r-1it3c9n'
 DATE_CLASS_NAME = 'css-1rynq56 r-fdjqy7 r-9cokr0 r-1xnzce8 r-1put3z6 r-1b43r93 r-1bymd8e r-5x3879 r-13uqrnb r-1it3c9n'
 ANSWER_CLASS_NAME = 'css-1rynq56 r-1wns2tv r-ubezar r-fdjqy7 r-9cokr0 r-1xnzce8 r-5x3879 r-13uqrnb r-1it3c9n'
-# URL = 'https://curiouscat.live/Wasp29'
-# URL = 'https://curiouscat.live/mohfarouk94'
-URL = 'https://curiouscat.live/discobanana'
 
 
-def start_driver(waiting_time=2.22, url=URL):
+def start_driver(url, waiting_time=2.22):
     chrome_options = Options()
     # chrome_options.add_argument("--disable-blink-features=AutomationControlled")
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -29,7 +26,7 @@ def start_driver(waiting_time=2.22, url=URL):
     chrome_options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
     # chrome_options.add_argument('--headless')
     driver = webdriver.Chrome(chrome_options)
-    driver.get(URL)
+    driver.get(url)
 
     try:
         WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, MAIN_CLASS_NAME)))
@@ -46,8 +43,10 @@ def scrape(driver, html, scroll_pause_time=3, n_scrolls=25):
     all_divs = []
     prev_height = len(html.text)
     html.click()
+    iterator = tqdm(range(n_scrolls))
+    print('Scraping CuriousCat profile...')
 
-    for _ in tqdm(range(n_scrolls)):
+    for _ in iterator:
         soup = BeautifulSoup(driver.page_source, "html.parser")
         divs = soup.find_all("div", class_=MAIN_CLASS_NAME)
         all_divs.extend(divs)
@@ -58,6 +57,7 @@ def scrape(driver, html, scroll_pause_time=3, n_scrolls=25):
         try:
             new_height = len(html.text)
             if new_height == prev_height:
+                iterator.close()
                 print('Early Stop! I touched the bottom!')
                 break
             prev_height = new_height
@@ -73,6 +73,8 @@ def end_driver(driver):
 
 def extract_data(all_divs):
     data_list = []
+    print('Extracting data...')
+
     for div in tqdm(all_divs):
         try:
             question_div = div.find("div", class_=QUESTION_CLASS_NAME)
@@ -100,15 +102,19 @@ def extract_data(all_divs):
         except Exception as e:
             print(f"Error processing div: {e}")
             continue
+
+    print(f'I succesfully extracted {len(data_list)} questions.')
     return data_list
 
 
-driver, html = start_driver()
-all_divs = scrape(driver, html)
-end_driver(driver)
-data_list = extract_data(all_divs)
+def get_profile(url, waiting_time=2.22, scroll_pause_time=3, n_scrolls=25):
+    driver, html = start_driver(url, waiting_time=waiting_time)
+    all_divs = scrape(driver, html, scroll_pause_time=scroll_pause_time, n_scrolls=n_scrolls)
+    end_driver(driver)
+    data_list = extract_data(all_divs)
 
-print(len(data_list))
-print(data_list[-5:])
-df = pd.DataFrame(data_list)
-df.to_csv(f'cat{int(time.time())}.csv', index=False)
+    return Profile(data_list)
+
+
+if __name__ == '__main__':
+    get_profile(URL)
