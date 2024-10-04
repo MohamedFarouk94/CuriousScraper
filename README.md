@@ -10,7 +10,8 @@ I've created a quick-and-not-so-dirty Python script that scrapes and saves your 
     1. This script was thrown together to quickly achieve a single purpose—get your data. It might not be the fastest, prettiest, or bug-free solution, but hey, it works (most of the time)! If you hit a snag, remember this was built with love, tea doses, and minimal testing.\
     2. I don't scrape images. Too much effort and they're not that common anyway.\
     3. The scraping is not headless. So you will monitor the browser while doing it.\
-    4. I also don't scrap non-anonymous questions. Turned out there's a bug preventing them to be scraped. It's fixable but too much effort and they're not common anyway.
+    4. I also don't scrape non-anonymous questions. Turned out there's a bug preventing them to be scraped. It's fixable but too much effort and they're not common anyway.\
+    5. The script might not work for you because the webpage may be loaded to your browser with different structure making the class names of the scraped elements different from what those I have coded this script using them. If this is the case you will need to extract your class names and update `scrape_backend.py` file. Contact me if so.
 
 ## User Guide 🚀
 
