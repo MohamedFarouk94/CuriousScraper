@@ -41,7 +41,10 @@ def start_driver(url, waiting_time=2.22):
 
 def scrape(driver, html, scroll_pause_time=3, n_scrolls=25):
     all_divs = []
-    prev_height = len(html.text)
+    try:
+        prev_height = len(html.text)
+    except Exception:
+        prev_height = 0
     html.click()
     print('Scraping CuriousCat profile...')
     iterator = tqdm(range(n_scrolls))

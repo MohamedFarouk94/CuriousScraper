@@ -9,7 +9,8 @@ I've created a quick-and-not-so-dirty Python script that scrapes and saves your 
 ⚠️ **Disclaimer**:\
     1. This script was thrown together to quickly achieve a single purpose—get your data. It might not be the fastest, prettiest, or bug-free solution, but hey, it works (most of the time)! If you hit a snag, remember this was built with love, tea doses, and minimal testing.\
     2. I don't scrape images. Too much effort and they're not that common anyway.\
-    3. The scraping is not headless. So you will monitor the browser while doing it.
+    3. The scraping is not headless. So you will monitor the browser while doing it.\
+    4. I also don't scrap non-anonymous questions. Turned out there's a bug preventing them to be scraped. It's fixable but too much effort and they're not common anyway.
 
 ## User Guide 🚀
 
@@ -106,4 +107,6 @@ So, that’s it! Save your CuriousCat data before the site goes down forever. Ma
 
 Feel free to fork this project, improve it, or reuse it in any future similar situations. It got the job done for me, and I hope it helps you too!
 
+Here's a screenshot of my terminal while scraping my profile:
+![Alt text](https://i.ibb.co/2nC8xwm/snap.jpg)
 Happy Scraping! 🐱✨
